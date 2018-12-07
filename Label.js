@@ -1,11 +1,10 @@
 class Label {
     
     constructor(options) {
-        this.manage = options.collectionManager;
+        this.manage = options.store;
         this.fn = options.fn;
         this.container = options.container;
-        this.element = options.element;
-        this.name = options.name;
+        this.template = options.template
         this.init();
     }
 
@@ -24,8 +23,8 @@ class Label {
     /**
      * [setTemplate description]
      */
-    setTemplate() { 
-        this.template = templates[this.name];
+    setTemplate(template) { 
+        this.template = template;
         return this;
     }
 
