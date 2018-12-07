@@ -1,4 +1,5 @@
-class TemplateRenderer {
+class Label {
+    
     constructor(options) {
         this.manage = options.collectionManager;
         this.fn = options.fn;
@@ -8,13 +9,14 @@ class TemplateRenderer {
         this.init();
     }
 
+    
     init() {
         this.setTemplate();
         this.setId(this.formatId(this.name)); 
 
         planner.register('response', (res, id) => {
             if (id === this.id) {
-                this.container.innerHTML = this.renderTemplate(res);
+                this.renderAsync(res, id);
             }
         })
     }
@@ -53,6 +55,16 @@ class TemplateRenderer {
      */
     getId() { return this.id; }
 
+
+    /**
+     * [request description]
+     * @return {[type]} [description]
+     */
+    request() {
+        return this.manage[this.fn];
+    }
+
+
     /**
      * [renderTemplate description]
      * @param  {[type]} data [description]
@@ -62,12 +74,13 @@ class TemplateRenderer {
         return this.template(data);
     }
 
+
     /**
      * [render description]
      * @return {[type]} [description]
      */
     render() {
-        this.container.innerHTML = this.renderTemplate(this.manage[this.fn]);
+        this.container.innerHTML = this.renderTemplate(this.request());
         return this;
     }
 
