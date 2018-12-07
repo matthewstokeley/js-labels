@@ -6,7 +6,10 @@ This is a drop-dead simple approach to handling html templates.  It is essential
 
 ### Dependencies
 
+
 `planner` - for pubsub events.
+
+
 `store` - or any third-party `api` request library.
 
 
@@ -33,11 +36,18 @@ This is a drop-dead simple approach to handling html templates.  It is essential
 
 ```
 
-### Asynchronicity
+### API Methods
 
-```
-  `labels` is designed to support easily switching between an `api` request object, as long as they agree to the same interface.  This means parsing async and synchronous requests.
+`request`
 
-  This feature relies on the use of 'planner' or another event library to handle asynchronous events. 
+manually request the template data
 
-```
+
+`render`
+
+requests template data and renders the html template the container element
+
+
+`renderAsync`
+
+manually send render a template with asynchronously requested data
