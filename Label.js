@@ -1,30 +1,31 @@
 class Label {
-    
     constructor(options) {
-        this.manage = options.store;
-        this.fn = options.fn;
+
+        this.store = options.store;
+        this.collectionManager = options.collectionManager;
         this.container = options.container;
-        this.template = options.template
+        this.element = options.element;
+        this.name = options.name;
+        this.method = options.method;
+        this.requestId = options.requestId;
         this.init();
     }
 
-    
     init() {
         this.setTemplate();
         this.setId(this.formatId(this.name)); 
-
-        planner.register('response', (res, id) => {
-            if (id === this.id) {
-                this.renderAsync(res, id);
-            }
+        events.register('response', (res, id) => {
+          if (id === this.requestId) {
+           this.container.innerHTML = this.renderTemplate(res);
+          }
         })
     }
 
     /**
      * [setTemplate description]
      */
-    setTemplate(template) { 
-        this.template = template;
+    setTemplate() { 
+        this.template = templates[this.name];
         return this;
     }
 
@@ -35,62 +36,47 @@ class Label {
         return this.template;
     }
 
-    /**
-     * [formatId description]
-     * @param  {[type]} id [description]
-     * @return {[type]}    [description]
-     */
     formatId(id) { return encodeURI(id); }
 
-    /**
-     * [setId description]
-     * @param {[type]} id [description]
-     */
     setId(id) { this.id = id; return this; }
 
-    /**
-     * [getId description]
-     * @return {[type]} [description]
-     */
     getId() { return this.id; }
 
-
-    /**
-     * [request description]
-     * @return {[type]} [description]
-     */
-    request() {
-        return this.manage[this.fn];
-    }
-
-
-    /**
-     * [renderTemplate description]
-     * @param  {[type]} data [description]
-     * @return {[type]}      [description]
-     */
     renderTemplate(data) {
         return this.template(data);
     }
 
 
     /**
-     * [render description]
-     * @return {[type]} [description]
+     * Use this method to render a template
+     * with a synchronous request]
+     * @return {Object} [description]
      */
     render() {
-        this.container.innerHTML = this.renderTemplate(this.request());
+        var data = this.collectionManager[this.method]();
+        this.container.innerHTML = this.renderTemplate(data);
         return this;
     }
 
     /**
-     * [renderAsync description]
-     * @param  {[type]} data [description]
-     * @return {[type]}      [description]
+     * Use this function to fire an async request
+     * @return {Object} [description]
+     */
+    request() {
+      this.collectionManager[this.method]();
+      return this;
+    }
+
+    /**
+     * Use this function to render the template
+     * with data accessed asynchronously.
+     * @chainable
+     * @param  {Array} data  
+     * @return {Object}  
      */
     renderAsync(data) {
-      this.container.innerHTML = this.renderTemplate(data);
-      return this;
+        this.container.innerHTML = this.renderTemplate(data);
+        return this;
     }
 
 }
