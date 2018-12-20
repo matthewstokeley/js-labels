@@ -20,9 +20,9 @@ class Labels {
 //        this.setId(this.formatId(this.name));
 
         events.register('response', (res, id) => {
-          if (id === this.requestId) {
-           this.container.innerHTML = this.renderTemplate(res);
-          }
+            return id === this.requestId
+                ? this.appendToContainer(res)
+                : ''
         })
     }
 
@@ -51,9 +51,22 @@ class Labels {
         return this.template(data);
     }
 
+    append (container, data) => container.innerHTML = this.renderTemplate(data)
+
+    isContainerArray (container) { 
+        return Array.isArray(container)
+        ? true
+        : false
+    }   
+
+    appendToContainer (data) {
+        isContainerArray(this.container)
+            ? this.container.forEach(this.append)
+            : this.append(this.container, data)
+    }
+
     render () {
-        var data = this.collectionManager[this.method]();
-        this.container.innerHTML = this.renderTemplate(data);
+        this.appendToContainer(this.collectionManager[this.method]());
         return this;
     }
 
@@ -63,7 +76,7 @@ class Labels {
     }
 
     renderAsync(data) {
-        this.container.innerHTML = this.renderTemplate(data);
+        this.appendToContainer(data)
         return this;
     }
 
