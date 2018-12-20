@@ -5,6 +5,7 @@ class Labels {
         this.collectionManager = options.collectionManager;
         this.container = options.container;
         this.name = options.name;
+        this.template = options.template;
         this.method = options.method;
         this.requestId = options.requestId;
         this.init();
@@ -12,8 +13,11 @@ class Labels {
     }
 
     init () {
+        // deprecated
         this.setTemplate();
-        this.setId(this.formatId(this.name)); 
+        
+        this.setId(this.formatId(this.name));
+
         events.register('response', (res, id) => {
           if (id === this.requestId) {
            this.container.innerHTML = this.renderTemplate(res);
