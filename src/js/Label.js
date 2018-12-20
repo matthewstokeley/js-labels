@@ -8,15 +8,16 @@ class Labels {
         this.template = options.template;
         this.method = options.method;
         this.requestId = options.requestId;
+        this.id = options.id;
         this.init();
 
     }
 
     init () {
         // deprecated
-        this.setTemplate();
-        
-        this.setId(this.formatId(this.name));
+        var objClass = this.name ? this.setTemplateFromGlobal() : this;
+
+//        this.setId(this.formatId(this.name));
 
         events.register('response', (res, id) => {
           if (id === this.requestId) {
@@ -28,7 +29,7 @@ class Labels {
     /**
      * [setTemplate description]
      */
-    setTemplate () { 
+    setTemplateFromGlobal () { 
         this.template = templates[this.name];
         return this;
     }
@@ -40,7 +41,7 @@ class Labels {
         return this.template;
     }
 
-    formatId (id) { return encodeURI(id); }
+//    formatId (id) { return encodeURI(id); }
 
     setId (id) { this.id = id; return this; }
 
