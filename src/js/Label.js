@@ -19,6 +19,15 @@ class Labels {
 
 //        this.setId(this.formatId(this.name));
 
+        
+        // this event listener is now the only mechanism through
+        // which the template is rendered.  
+        // 
+        // store and collectionmanager can now be decoupled 
+        //  and not even injected  into this class, although
+        //  now the synchronous store methods have to be treated as
+        //  if they are asynchronous.  look at patterns in vue and gutenberg
+        //  for  handing data, data modules, etc    
         events.register('response', (res, id) => {
             return id === this.requestId
                 ? this.appendToContainer(res)
@@ -51,7 +60,17 @@ class Labels {
         return this.template(data);
     }
 
-    append (container, data) => container.innerHTML = this.renderTemplate(data)
+    /**
+     * the private me
+     * @chainable
+     * @param  {[type]} container [description]
+     * @param  {[type]} data      [description]
+     * @return {[type]}           [description]
+     */
+    append (container, data) {
+        container.innerHTML = this.renderTemplate(data)
+        return this;
+    }
 
     isContainerArray (container) { 
         return Array.isArray(container)
@@ -65,19 +84,19 @@ class Labels {
             : this.append(this.container, data)
     }
 
-    render () {
-        this.appendToContainer(this.collectionManager[this.method]());
-        return this;
-    }
+    // render () {
+    //     this.appendToContainer(this.collectionManager[this.method]());
+    //     return this;
+    // }
 
-    request() {
-      this.collectionManager[this.method]();
-      return this;
-    }
+    // request () {
+    //     this.collectionManager[this.method]();
+    //     return this;
+    // }
 
-    renderAsync(data) {
-        this.appendToContainer(data)
-        return this;
-    }
+    // renderAsync (data) {
+    //     this.appendToContainer(data)
+    //     return this;
+    // }
 
 }
