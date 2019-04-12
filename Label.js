@@ -8,11 +8,11 @@ class Label {
         this.name = options.name;
         this.method = options.method;
         this.requestId = options.requestId;
-        this.init();
+        this.init(options);
     }
 
     init() {
-        this.setTemplate();
+        this.setTemplate(options.template);
         this.setId(this.formatId(this.name)); 
         events.register('response', (res, id) => {
           if (id === this.requestId) {
@@ -24,8 +24,8 @@ class Label {
     /**
      * [setTemplate description]
      */
-    setTemplate() { 
-        this.template = templates[this.name];
+    setTemplate(template) { 
+        this.template = template;
         return this;
     }
 
