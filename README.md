@@ -16,7 +16,7 @@ This is a drop-dead simple approach to handling html templates.  It is essential
 ### Example
 
 ```
-
+  // @todo refactor
   var templates = {
   	menu: (data) => {
   		return 'an html template'
@@ -27,6 +27,7 @@ This is a drop-dead simple approach to handling html templates.  It is essential
   	   manage: Manager,
   	   fn: 'findAll',
   	   container: document.getElementByName('menu'),
+       template: templates.menu,
   	   name: 'menu'
   	})
 
