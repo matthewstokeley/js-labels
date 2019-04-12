@@ -1,6 +1,6 @@
 # Labels
 
-0.0.5
+0.0.6
 
 This is a drop-dead simple approach to handling html templates.  It is essentially a `pojo` - a plain old javascript object - that accepts classes to manage `api` requests and configurations concerning templates. 
 
